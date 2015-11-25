@@ -1,0 +1,159 @@
+FORMAT: 1A
+HOST: api.tidepool.org
+
+# Tidepool API for user authorization
+
+# Group Access 
+
+### GET /access/status
+
+The status of the authorization API
+
++ Response 200
+
+### GET /access/groups/{userId}
+
+Retrieve list of groups the user has access to.
+
++ Parameters
+
+    + userId: `1c65c722cb` (string, required) - id or username of user to retrieve
+
++ Request
+
+    + Headers
+
+            x-tidepool-session-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
++ Response 200 (application/json)
+
+    + Body
+
+        ```js
+        {
+            "1c65c722cb": {
+                "root": {}
+            }
+        }
+        ```
+
+
++ Response 401
+
+    + Body
+
+            "Try the speakeasy down the street."
+
+
+### GET /access/{groupId}
+
+Which users have access to the group data.
+
++ Parameters
+
+    + groupId: `1c65c722cb` (string, required) - id of group to check for permissions
+
++ Request
+
+    + Headers
+
+            x-tidepool-session-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
++ Response 200 (application/json)
+
+    + Body
+
+        ```js
+        {
+            "1c65c722cb": {
+                "root": {}
+             },
+             "2cc218b7ff": {
+                 "example_perm": {}
+             }
+        }
+        
+        ```
+
++ Response 401
+
+    + Body
+
+            "These are not the droids you are looking for."
+
+### /access/{groupId}/{userId}
+
+Group permissions for a user.
+
++ Parameters
+
+    + groupId: `1c65c722cb` (string, required) - id of group to check for permissions
+
+### GET
+
+Get permissions for the user.
+
++ Parameters
+
+    + userId: `2cc218b7ff` (string, required) - id or username of user to get permissions for on the group
+
++ Request
+
+    + Headers
+
+            x-tidepool-session-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
++ Response 200 (application/json)
+
+    + Body
+
+        ```js
+        {
+            "example_perm": {}
+        }
+        ```
++ Response 401
+
+    + Body
+
+            "They went thattaway!"
+
+### POST
+
+Set permissions for the user.
+
+**NOTE:** If the body of the request is empty, permissions are removed for the specified user.
+
++ Parameters
+
+    + userId: `2cc218b7ff` (string, required) - id or username of user to set permissions for on the group
+
++ Request
+
+    + Headers
+
+            x-tidepool-session-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
+    + Body
+
+        ```js
+        {
+            "example_perm": {}
+        }
+        ```
+
++ Response 200
+
+    + Body
+
+        ```js
+        {
+            "example_perm": {} 
+        }
+        ```
+
++ Response 401
+
+    + Body
+
+            "Nope nope nope"
